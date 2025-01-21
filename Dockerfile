@@ -1,15 +1,18 @@
 # Use Amazon Corretto 21 as the base image
 FROM amazoncorretto:21-alpine as build
 
+# Install Maven
+RUN apk add --no-cache maven
+
 # Set working directory
 WORKDIR /app
 
-# Copy your pom.xml and source code
+# Copy pom.xml and source code
 COPY pom.xml .
 COPY src ./src
 
 # Build the app
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Copy the built JAR file to a new stage
 FROM amazoncorretto:21-alpine
